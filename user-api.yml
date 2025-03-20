@@ -17,7 +17,7 @@ components:
         email:
           type: string
         age:
-          type: string
+          type: integer
         createdAt:
           type: string
         updatedAt:
@@ -51,15 +51,15 @@ paths:
             schema:
               $ref: '#/components/schemas/user'
       responses:
-        200:
+        '200':
           description: Berhasil menambahkan user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
-        500:
+        '500':
           description: Server Gagal
-        403:
+        '403':
           description: Tidak diijinkan
 
   /users/{id}:

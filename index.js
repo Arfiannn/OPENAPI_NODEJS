@@ -22,4 +22,21 @@ app.get('/users', (req, res) => {
     });
 });
 
+app.post('/users', (req, res) => {
+    const { name, email, age } = req.body;
+
+    db.query(
+        'INSERT INTO user (name, email, age, createdAt, updatedAt) VALUES (?, ?, ?, NOW(), NOW())',
+        [name, email, age],
+        (err, results) => {
+            if (err) {
+                res.status(500).send('Internal Server Error');
+                return;
+            }
+
+            res.json({ message: 'User berhasil ditambahkan', id: results.insertId });
+        }
+    );
+});
+
 app.listen(3000, () => console.log('Server berjalan di http://localhost:3000'));
