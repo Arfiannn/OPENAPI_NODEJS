@@ -50,4 +50,15 @@ app.get('/users/:id', (req, res) => {
     });
 });
 
+app.delete('/users/:id', (req, res) => {
+    db.query('DELETE FROM user WHERE id = ?', [req.params.id], (err, results) => {
+        if (err) {
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        res.json({ message: 'User berhasil dihapus' });
+    });
+});
+
 app.listen(3000, () => console.log('Server berjalan di http://localhost:3000'));
