@@ -9,6 +9,8 @@ const swaggerDocument = YAML.parse(fs.readFileSync('./user-api.yml', 'utf8'));
 const db = mysql.createConnection({ host: "localhost", user: "root", database: "openapi", password: "" });
 const app = express();
 
+app.use(express.json());
+
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/users', (req, res) => {
@@ -60,5 +62,24 @@ app.delete('/users/:id', (req, res) => {
         res.json({ message: 'User berhasil dihapus' });
     });
 });
+
+app.put('/users/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, email, age } = req.query;
+
+    db.query(
+        'UPDATE user SET name = ?, email = ?, age = ?, updatedAt = NOW() WHERE id = ?',
+        [name, email, age, id],
+        (err, results) => {
+            if (err) {
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            }
+
+            res.json({ message: 'User berhasil diperbarui' });
+        }
+    );
+});
+
 
 app.listen(3000, () => console.log('Server berjalan di http://localhost:3000'));
