@@ -39,4 +39,15 @@ app.post('/users', (req, res) => {
     );
 });
 
+app.get('/users/:id', (req, res) => {
+    db.query('SELECT * FROM user WHERE id = ?', [req.params.id], (err, results) => {
+        if (err) {
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+
+        res.json(results);
+    });
+});
+
 app.listen(3000, () => console.log('Server berjalan di http://localhost:3000'));
